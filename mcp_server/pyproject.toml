@@ -10,3 +10,6 @@ dependencies = [
     "graphiti-core>=0.11.6",
     "azure-identity>=1.21.0",
 ]
+
+[tool.uv.sources]
+graphiti-core = { path = "../" }

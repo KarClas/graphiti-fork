@@ -12,12 +12,18 @@ ENV PATH="/root/.local/bin:${PATH}"
 
 ENV MCP_SERVER_HOST="0.0.0.0"
 
-# Copy pyproject.toml and install dependencies
-COPY pyproject.toml .
-RUN uv sync
+# Copy entire graphiti-core project
+COPY . /app/graphiti_core_project
 
-# Copy application code
-COPY graphiti_mcp_server.py .
+# Copy MCP server files
+COPY mcp_server/pyproject.toml .
+COPY mcp_server/graphiti_mcp_server.py .
+
+# Update the pyproject.toml to point to the copied graphiti-core project
+RUN sed -i 's|path = "../"|path = "/app/graphiti_core_project"|g' pyproject.toml
+
+# Install dependencies
+RUN uv sync
 
 EXPOSE 8000
 
